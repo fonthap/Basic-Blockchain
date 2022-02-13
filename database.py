@@ -9,21 +9,22 @@ def create_db():
                 team2 text,
                 score text,
                 timestamp text,
-                hash text
+                hashtx text,
+                prehash text
             )
         """
         con.execute(sql_cmd)
 def insert_db(params):
     with sqlite3.connect("block.db") as con:
         sql_cmd = """
-            insert into block(team1, team2, score, timestamp, hash) values(?, ?, ?, ?, ?);
+            insert into block(team1, team2, score, timestamp, hashtx, prehash) values(?, ?, ?, ?, ?, ?);
         """
         con.execute(sql_cmd, params)
 
 def select_db():
     with sqlite3.connect("block.db") as con:
         sql_cmd = """
-           select team1, team2, score, timestamp,hash from block
+           select team1, team2, score, timestamp,hashtx,prehash from block
         """
     return con.execute(sql_cmd)
 
@@ -32,7 +33,7 @@ def selecthash_db(params):
     with sqlite3.connect("block.db") as con:
         sql_cmd = """
            select
-           hash from block
+           hashtx ,prehash from block
            where id = ?
         """
     return con.execute(sql_cmd ,[params])
@@ -41,7 +42,7 @@ def update_db(params):
     with sqlite3.connect("block.db") as con:
         sql_cmd = """
            update block 
-            set hash = ?
+            set hashtx = ?,prehash = ?
            where  id = ? 
         """
         con.execute(sql_cmd, params)

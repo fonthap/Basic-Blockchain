@@ -10,13 +10,14 @@ class BlockchaininDatabase(object):
 
 # Create a new block listing key/value pairs of block information in a JSON object. Reset the list of pending transactions & append the newest block to the chain.
 
-    def new_block(self, previous_hash=None):
+    def new_block(self,transactions_hash = None, previous_hash=None):
         block = {
             'index': len(self.chain) + 1,
             'transactions': self.pending_transactions,
+            'transactions_hash' : transactions_hash or self.hash(self.pending_transactions),
             'previous_hash': previous_hash or self.hash(self.chain[-1]),
         }
-        database.update_db((previous_hash or self.hash(self.chain[-1]),len(self.chain) + 1))
+        database.update_db((self.hash(self.pending_transactions) or transactions_hash,previous_hash or self.hash(self.chain[-1]),len(self.chain) + 1))
         self.pending_transactions = []
         self.chain.append(block)
         
@@ -36,7 +37,7 @@ class BlockchaininDatabase(object):
             'Score': score,
             'timestamp': time.ctime(time.time()),
         }
-        database.insert_db((team1, team2, score, time.ctime(time.time()),''))
+        database.insert_db((team1, team2, score, time.ctime(time.time()),'',''))
         self.pending_transactions.append(transaction)
         return self.last_block['index'] + 1
 
@@ -52,7 +53,7 @@ def setup():
         blockchain = BlockchaininDatabase()
 
         blockchain.new_block(previous_hash="Dota2 - Esport")
-        database.insert_db(('', '', '', time.ctime(time.time()),'Dota2 - Esport'))
+        database.insert_db(('', '', '', '','','Dota2 - Esport'))
 
         blockchain.new_transaction("T1", "TNC Predator", '2 – 0')
         blockchain.new_block()

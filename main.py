@@ -10,7 +10,7 @@ x = database.select_db()
 j = 0
 for i in x:
     if j == 0:
-        blockchainInApp.new_block(previous_hash=i[4])
+        blockchainInApp.new_block(previous_hash=i[5])
         j = 1
     else:
         blockchainInApp.new_transaction(i[0], i[1], i[2],i[3])
@@ -21,16 +21,24 @@ def checkdata():
     print('{:^30}'.format('Data Verification'))
     print('{:-<30}'.format(' '))
     for round in range(len(blockchainInApp.chain)):
-        hashchain = blockchainInApp.chain[round].get('previous_hash')
-        hashdata = ''
+        hashchaintx = blockchainInApp.chain[round].get('transactions_hash')
+        hashchainpre = blockchainInApp.chain[round].get('previous_hash')
+        hashdatatx = ''
+        hashdatapre = ''
         tmp = str(round+1)
         x = database.selecthash_db((tmp))
         for i in x:
-            hashdata = i[0]
-        if hashchain == hashdata:
-            print('   Data block %d is correct' % round)
+            hashdatatx = i[0]
+            hashdatapre=i[1]
+        if(round == 0 and hashchainpre == hashdatapre):
+            print('   Data block 0 is correct')
+        elif(round == 0 and hashchainpre != hashdatapre):
+            print('   Data block 0 is not correct')
         else:
-            print('   Data block %d is not correct' % round)
+            if (hashchaintx == hashdatatx and hashchainpre == hashdatapre ):
+                print('   Data block %d is correct' % round)
+            else:
+                    print('   Data block %d is not correct' % round)
     print('{:-<30}'.format(' '))
 
 def inputdata():
