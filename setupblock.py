@@ -82,7 +82,7 @@ def setup():
         blockchain.new_transaction("Team SMG", "Motivate.Trust Gaming", '2 – 0')
         blockchain.new_block()
 
-        blockchain.new_transaction("TBOOM Esports", "Team SMG", '2 – 0')
+        blockchain.new_transaction("BOOM Esports", "Team SMG", '2 – 0')
         blockchain.new_block()
 
 

@@ -14,6 +14,7 @@ def create_db():
             )
         """
         con.execute(sql_cmd)
+        
 def insert_db(params):
     with sqlite3.connect("block.db") as con:
         sql_cmd = """
